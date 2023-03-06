@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
-    Key? key,
+    super.key,
     this.hintText,
     this.controller,
     this.onTap,
@@ -10,11 +10,11 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.focusNode,
-  }) : super(key: key);
+  });
 
   final String? hintText;
   final TextEditingController? controller;
-  final Function()? onTap;
+  final void Function()? onTap;
   final int? maxLines;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -23,13 +23,15 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       onTap: onTap,
       maxLines: maxLines,
       focusNode: focusNode,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
-        hintText: hintText ?? '',
+        label: Text(hintText ?? ''),
+        hintText: hintText,
         border: const OutlineInputBorder(),
       ),
     );

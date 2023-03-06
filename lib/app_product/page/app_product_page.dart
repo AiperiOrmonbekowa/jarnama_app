@@ -1,98 +1,84 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:jarnama_app/components/custom_text_field.dart';
+import '../../components/image_card.dart';
+import '../../components/image_container.dart';
+import '../../services/date_time.service.dart';
+import '../../services/image_picker_service.dart';
 
-import '../../components/custom_text_field.dart';
-
+// ignore: must_be_immutable
 class AppProductPage extends StatelessWidget {
-  const AppProductPage({Key? key}) : super(key: key);
+  AppProductPage({Key? key}) : super(key: key);
+
+  final title = TextEditingController();
+  final desc = TextEditingController();
+  final dateTime = TextEditingController();
+  final phone = TextEditingController();
+  final userName = TextEditingController();
+  final address = TextEditingController();
+  final price = TextEditingController();
+  List<XFile> images = [];
 
   @override
   Widget build(BuildContext context) {
-    final _title = TextEditingController();
-    final _desc = TextEditingController();
-    final _datetime = TextEditingController();
-    final _phone = TextEditingController();
-    final _userName = TextEditingController();
-    final _adress = TextEditingController();
-    final _price = TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AppProductPage'),
+        title: const Text('AppProducttPage'),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+        padding: const EdgeInsets.all(20),
         children: [
           CustomTextField(
-            controller: _title,
+            controller: title,
             hintText: 'Title',
           ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           CustomTextField(
-            controller: _desc,
-            hintText: 'Descripsion',
+            controller: desc,
+            maxLines: 4,
+            hintText: 'Description',
           ),
-          const SizedBox(
-            height: 12,
+          const SizedBox(height: 12),
+          ImageContainer(
+            images: images,
+            onPiced: (value) => images = value,
           ),
+          const SizedBox(height: 12),
           CustomTextField(
-            controller: _datetime,
-            hintText: 'Date Time',
+            controller: dateTime,
+            hintText: 'DateTime',
             focusNode: FocusNode(),
             onTap: () async {
-              // iosDatePicker(BuildContext context) {
-              showCupertinoModalPopup(
-                  context: context,
-                  builder: (BuildContext builder) {
-                    return Container(
-                      height:
-                          MediaQuery.of(context).copyWith().size.height * 0.25,
-                      color: Colors.white,
-                      child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.date,
-                        onDateTimeChanged: (value) {
-                          _datetime.text = value.toString();
-                        },
-                        initialDateTime: DateTime.now(),
-                        minimumYear: 2000,
-                        maximumYear: 3000,
-                      ),
-                    );
-                  });
+              await DateTimeService.showDateTimePicker(
+                context,
+                (value) => dateTime.text = DateFormat("d MMM, y").format(value),
+              );
             },
           ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           CustomTextField(
-            controller: _phone,
+            controller: phone,
             hintText: 'Phone Number',
           ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           CustomTextField(
-            controller: _userName,
+            controller: userName,
             hintText: 'User Name',
           ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           CustomTextField(
-            controller: _adress,
-            hintText: 'Adress',
+            controller: address,
+            hintText: 'Address',
           ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           CustomTextField(
-            controller: _price,
+            controller: price,
             hintText: 'Price',
           ),
-          const SizedBox(
-            height: 12,
-          ),
+          const SizedBox(height: 12),
           ElevatedButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.publish),

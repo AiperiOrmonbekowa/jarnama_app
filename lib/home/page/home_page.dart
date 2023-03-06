@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AppProductPage()));
+              MaterialPageRoute(builder: (context) => AppProductPage()));
         },
         child: const Icon(Icons.add),
       ),
