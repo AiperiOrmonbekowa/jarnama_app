@@ -1,13 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:jarnama_app/components/custom_text_field.dart';
-import '../../components/image_card.dart';
+import 'package:jarnama_app/model/product_model.dart';
+import 'package:jarnama_app/services/loading_service.dart';
+import 'package:jarnama_app/services/storage_service.dart';
 import '../../components/image_container.dart';
 import '../../services/date_time.service.dart';
-import '../../services/image_picker_service.dart';
+import '../../services/store_service.dart';
 
 // ignore: must_be_immutable
 class AppProductPage extends StatelessWidget {
@@ -80,7 +80,24 @@ class AppProductPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () async {
+              LoadingService().showLoading(context);
+              final urls = await StorageService().uploadImage(images);
+
+              final product = Product(
+                title: title.text,
+                description: desc.text,
+                dateTime: dateTime.text,
+                phoneNumber: phone.text,
+                userName: userName.text,
+                address: address.text,
+                images: urls,
+                prices: price.text,
+              );
+              await StoreService().saveProduct(product);
+              // ignore: use_build_context_synchronously
+              Navigator.popUntil(context, (route) => false);
+            },
             icon: const Icon(Icons.publish),
             label: const Text('Add to FireStore'),
           ),
